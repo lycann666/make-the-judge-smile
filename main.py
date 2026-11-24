@@ -13,8 +13,16 @@ ENTRY = (
     "honoured, and late for everything."
 )
 
+# Bounty gate: the entry line must be 1-200 characters. Fail loudly
+# instead of writing an entry the judge would reject outright.
+MAX_ENTRY_CHARS = 200
+
 
 def main() -> None:
+    if len(ENTRY) > MAX_ENTRY_CHARS:
+        raise SystemExit(
+            f"entry too long: {len(ENTRY)} chars (max {MAX_ENTRY_CHARS})"
+        )
     output_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output/entry.txt")
     # MAKEFUN_OUTPUT_DIR names a directory; tolerate a trailing file path.
     if output_dir.endswith("entry.txt"):
